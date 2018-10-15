@@ -1,6 +1,7 @@
 <template>
   <div class="hello">
     <input type="text" class="todo-input" placeholder="what needs to be done" v-model="newTodo" @keyup.enter="addTodo">
+    <transition-group name="fade" enter-active-class="animated fadeInLeft" leave-active-class="animated fadeOutRight">
     <div v-for="(todo,index) in todosFiltered" :key="todo.id" class="todo-item">
       <div class="todo-item-left">
         <input type="checkbox" v-model="todo.completed">
@@ -11,6 +12,7 @@
         &times;
       </div>
     </div>
+    </transition-group>
 
     <div class="extra-container">
       <div><label><input type="checkbox" :checked="!anyRemaining" @change="checkAllTodos"> Check All</label></div>
@@ -25,7 +27,9 @@
       </div>
       
       <div>
-        <button v-if="showClearCompletedButton" @click="clearCompleted">Clear Completed</button>
+        <transition name="fade">
+          <button v-if="showClearCompletedButton" @click="clearCompleted">Clear Completed</button>
+        </transition>
       </div>
 
 
@@ -130,6 +134,8 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss">
+@import url("https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css");
+
 .todo-input {
   width: 100%;
   padding: 10px 18px;
@@ -145,6 +151,7 @@ export default {
   margin-bottom: 12px;
   align-items: center;
   justify-content: space-between;
+  animation-duration: 0.4s;
 }
 .remove-item {
   cursor:pointer;
@@ -210,5 +217,13 @@ button {
 
 .active {
   background: lightgreen;
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .2s;
+}
+
+.fade-enter, .fade-leave-to {
+  opacity: 0;
 }
 </style>
